@@ -1,47 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gatau</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
+<head> 
+  <meta charset="utf-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+  <title>Auto-Playing Video</title>
+  <style type="text/css">
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
 
-        video {
-            width: 100vw; /* Lebar penuh sesuai viewport */
-            height: 100vh; /* Tinggi penuh sesuai viewport */
-            object-fit: cover; /* Menjaga rasio aspek sambil memenuhi area */
-            position: fixed; /* Memastikan video tetap di layar saat scrolling */
-            top: 0;
-            left: 0;
-        }
-    </style>
-</head>
-<body>
-    <video autoplay loop>
-        <source src="video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
 
-    <script>
-        const video = document.querySelector('video');
-        video.controls = false; // Menonaktifkan kontrol video
+    .overlay, .scare {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+    }
 
-        // Cegah pause
-        video.addEventListener('pause', function() {
-            video.play();
-        });
+    video#video {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
 
-        // Memulai video setelah halaman dimuat
-        window.addEventListener('load', function() {
-            video.play();
-        });
-    </script>
+    video#video::-webkit-media-controls-enclosure {
+      display: none !important;
+    }
+  </style> 
+</head> 
+<body> 
+  <div class="scare"> 
+    <video id="video" class="video" src="video.mp4" autoplay loop></video> 
+  </div> 
+
+  <script type="text/javascript">
+    const video = document.getElementById("video");
+
+    // Fullscreen the video and play on click
+    function videoClick(event) {
+      if(event) event.preventDefault();
+
+      // Fullscreen mode
+      const { documentElement } = document;
+      if(documentElement.requestFullscreen) documentElement.requestFullscreen();
+      else if(documentElement.mozRequestFullScreen) documentElement.mozRequestFullScreen();
+      else if(documentElement.webkitRequestFullscreen) documentElement.webkitRequestFullscreen();
+      else if(documentElement.msRequestFullscreen) documentElement.msRequestFullscreen();
+
+      video.play();
+    }
+
+    // Disable controls and autoplay
+    video.controls = false;
+    video.addEventListener("pause", function() {
+      video.play();
+    });
+
+    // Event listener for click to enable fullscreen
+    video.addEventListener("click", videoClick);
+  </script>
 </body>
 </html>
