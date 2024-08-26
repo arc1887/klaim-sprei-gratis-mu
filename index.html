@@ -3,26 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aku mau sprei Gratis</title>
+    <title>gatau</title>
     <style>
-        video {
+        html, body {
+            margin: 0;
+            padding: 0;
             width: 100%;
-            height: auto;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100vw; /* Lebar penuh sesuai viewport */
+            height: 100vh; /* Tinggi penuh sesuai viewport */
+            object-fit: cover; /* Menjaga rasio aspek sambil memenuhi area */
+            position: fixed; /* Memastikan video tetap di layar saat scrolling */
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
 <body>
-    <video autoplay muted loop>
+    <video autoplay loop>
         <source src="video.mp4" type="video/mp4">
-        
+        Your browser does not support the video tag.
     </video>
 
     <script>
         const video = document.querySelector('video');
-        video.controls = false; // Disable video controls
+        video.controls = false; // Menonaktifkan kontrol video
 
-        // Prevent pausing
+        // Cegah pause
         video.addEventListener('pause', function() {
+            video.play();
+        });
+
+        // Memulai video setelah halaman dimuat
+        window.addEventListener('load', function() {
             video.play();
         });
     </script>
